@@ -35,12 +35,12 @@ _stock = sys.argv[1]
 
 
 class Dashboard:
-"""
-Author: George Finlay.
-Email: george.ap.finlay@gmail.com
+    """
+    Author: George Finlay.
+    Email: george.ap.finlay@gmail.com
 
 
-"""
+    """
     def __init__(self, _stock):
         self.stock_name = _stock
         self._stock = yf.Ticker(_stock).history(period="max")
@@ -63,6 +63,8 @@ Email: george.ap.finlay@gmail.com
         """
         # Returns
         self.data['returns'] = self.data['High'].pct_change(1)
+        yearly_return = self.data['High'].pct_change(365)
+        most_recent_return = self.data['High'].pct_change(365).iloc[-1]
         returns = self.data['returns'].dropna()
         mean_return = np.mean(returns)
         volatility = np.std(returns)
@@ -80,7 +82,9 @@ Email: george.ap.finlay@gmail.com
                 "Volatility": [volatility],
                 "Median Return": [median_return],
                 "Skewness": [skewness],
-                "Log Trend": [trend]})
+                "Log Trend": [trend],
+                "Mean Yearly Return": [np.mean(yearly_return)],
+                "Most Recent Yearly Return": [most_recent_return]})
 
         return [new_data, self.data]
 
